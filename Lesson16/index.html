@@ -466,8 +466,31 @@
     }
   });
 
+  const valid3 = new Validator({
+    selector: '#form3', 
+    pattern: {
+      name: /[А-Яа-яЁё]/
+    },
+    method: {
+        'form3-phone': [
+            ['notEmpty'],
+            ['pattern', 'phone']
+    ],
+        'form3-email': [
+            ['notEmpty'],
+            ['pattern', 'email']
+    ],
+        'form3-name':[
+            ['notEmpty'],
+            ['pattern', 'name']
+        ]
+    }
+  });
+
+
   valid1.init();
   valid2.init();
+  valid3.init();
 
 </script>
 
