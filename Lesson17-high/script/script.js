@@ -409,18 +409,17 @@ document.addEventListener('DOMContentLoaded', () => {
             loadMessage = `<img src = "./images/Status/loadiiing.gif" width = "100" !important>`,
             succesMessage = '<img src = "./images/Status/Download-Success-PNG-Image.png" width = "100" !important>';
 
-        const form = document.querySelectorAll('#form1, #form2, #form3'),        
+        const bodyForm = document.querySelector('body'),        
             statusMessage = document.createElement('div');        
         statusMessage.style.cssText = `margin-top: 10px !important`;
-        console.log(statusMessage);
 
         //Подклюаем к каждой форме
-        form.forEach((item) => {
-            item.addEventListener('submit', (event) => {
+            bodyForm.addEventListener('submit', (event) => {
+                let target = event.target;
                 event.preventDefault();
-                item.appendChild(statusMessage);
+                target.appendChild(statusMessage);
                 statusMessage.innerHTML = loadMessage;
-                const formData = new FormData(item);
+                const formData = new FormData(target);
                 let body = {};
                 formData.forEach((val, key) => {
                     body[key] = val;
@@ -429,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     statusMessage.innerHTML = succesMessage;
 
                     //После отправки формы удаляются значения и стили
-                    let delData = item.querySelectorAll('input');
+                    let delData = target.querySelectorAll('input');
                     delData.forEach((item) => {
                         item.value = '';
                         item.classList.remove('success');
@@ -440,7 +439,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error(error);
             });
         });
-    });
         
 
         const postData = (body, outputData, errorData) => {
