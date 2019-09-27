@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             idInterval = setInterval(updateClock, 1000);
     };
 
-    countTimer('11 16 2019 00:08:40');
+    countTimer('11 16 2018 00:08:40');
 
     //Menu
     const toggleMenu = () => {
@@ -128,6 +128,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         } else {
                             cancelAnimationFrame(closeUpTab);
                             popUp.style.display = 'none';
+
+                            //Очищаем данные после завершения анимации
+                            let elementsForm = popUpTab.querySelectorAll('.form-name, .form-phone, .form-email'),
+                                toDel = popUpTab.querySelector('.toDel');
+                            elementsForm.forEach((item) => {
+                                item.value = '';
+                                item.classList.remove('success');
+                                item.classList.remove('error');
+                                //Удалаяем стили
+                                if (item.nextElementSibling &&
+                                    item.nextElementSibling.classList.contains('validator-error')) {
+                                    item.nextElementSibling.remove();
+                                }
+                                //удаляем лого загрузки
+                                if (toDel) {
+                                    toDel.remove();
+                                }
+                            });
                         }
                     };
 
@@ -333,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 if (calcDay.value == '') {
-                    dayValue *= 0; 
+                    dayValue *= 0;
                 } else if (calcDay.value && calcDay.value < 5) {
                     dayValue *= 2;
                 } else if (calcDay.value && calcDay.value < 10) {
@@ -409,22 +427,26 @@ document.addEventListener('DOMContentLoaded', () => {
             loadMessage = `<img src = "./images/Status/loadiiing.gif" width = "100" !important>`,
             succesMessage = '<img src = "./images/Status/Download-Success-PNG-Image.png" width = "100" !important>';
 
-        const bodyForm = document.querySelector('body'),        
-            statusMessage = document.createElement('div');        
+        const bodyForm = document.querySelector('body'),
+            statusMessage = document.createElement('div');
+        //Добавляем класс для последующего удаления
+        statusMessage.classList.add('toDel');
         statusMessage.style.cssText = `margin-top: 10px !important`;
 
         //Подклюаем к каждой форме
-            bodyForm.addEventListener('submit', (event) => {
-                let target = event.target;
-                event.preventDefault();
-                target.appendChild(statusMessage);
-                statusMessage.innerHTML = loadMessage;
-                const formData = new FormData(target);
-                let body = {};
-                formData.forEach((val, key) => {
-                    body[key] = val;
-                });  
-                postData(body, () => {
+        bodyForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            let target = event.target;
+            target.appendChild(statusMessage);
+            statusMessage.innerHTML = loadMessage;
+
+            const formData = new FormData(target);
+
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body, () => {
                     statusMessage.innerHTML = succesMessage;
 
                     //После отправки формы удаляются значения и стили
@@ -433,15 +455,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         item.value = '';
                         item.classList.remove('success');
                     });
-                }, 
+                },
                 (error) => {
                     statusMessage.innerHTML = errorMessage;
                     console.error(error);
-            });
+                });
         });
-        
+
 
         const postData = (body, outputData, errorData) => {
+
             const request = new XMLHttpRequest();
 
             request.addEventListener('readystatechange', () => {
@@ -457,12 +480,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             request.open('POST', './server.php');
             request.setRequestHeader('Content-Type', 'application/json');
-            
+
             request.send(JSON.stringify(body));
         };
     };
-
     sendForm();
+
+    //Блокировка полей ввода имени и суммы
+    const correctInput = function () {
+        const body = document.querySelector('body');
+        body.addEventListener('input', () => {
+            let target = event.target,
+                idTarget = target.id;
+            if (/name$/.test(idTarget) || /message$/.test(idTarget)) {
+                target.value = target.value.replace(/[^А-Яа-яёЁ\s]/mgi, '');
+            }            
+        });
+    };
+    correctInput();
 
     //Проверка
     // document.addEventListener('click', (elem) => {
