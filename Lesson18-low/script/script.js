@@ -446,7 +446,8 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body, () => {
+            postData(body) 
+                .then (() => {
                     statusMessage.innerHTML = succesMessage;
 
                     //После отправки формы удаляются значения и стили
@@ -455,8 +456,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         item.value = '';
                         item.classList.remove('success');
                     });
-                },
-                (error) => {
+                })
+                .catch((error) => {
                     statusMessage.innerHTML = errorMessage;
                     console.error(error);
                 });
@@ -464,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-        const postData = (body, outputData, errorData) => {
+        const postData = (body) => {
             return new Promise ((resolve, reject) => {
                 const request = new XMLHttpRequest();
 
@@ -473,9 +474,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
                     if (request.status === 200) {
-                        outputData(); //resolve
+                        reject(); //resolve
                     } else {
-                        errorData(request.status); //reject
+                        resolve(request.status); //reject
                     }
                 });
     
