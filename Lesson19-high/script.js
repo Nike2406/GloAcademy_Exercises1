@@ -17,7 +17,7 @@ body.addEventListener('click', (event) => {
 });
 
 const getData = (link) => {
-
+    
     fetch(link)
         .then((response) => {
             if (response.status !== 200) {
@@ -28,6 +28,7 @@ const getData = (link) => {
             //https://stackoverflow.com/questions/53511974/javascript-fetch-failed-to-execute-json-on-response-body-stream-is-locked
             return (response.json());
         })
+
         .then((data) => {            
             let url = Object.values(data)[0];
             if (/g$/i.test(url) || /f$/i.test(url)) {
