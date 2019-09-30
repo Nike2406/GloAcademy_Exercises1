@@ -27,6 +27,7 @@ const sendForm = () => {
                 }
 
                 statusMessage.innerHTML = succesMessage;
+                setTimeout(() => statusMessage.remove(), 2000);
 
                 //После отправки формы удаляются значения и стили
                 let delData = target.querySelectorAll('input');
@@ -37,6 +38,7 @@ const sendForm = () => {
             })
             .catch((error) => {
                 statusMessage.innerHTML = errorMessage;
+                setTimeout(() => statusMessage.remove(), 2000); 
                 console.error(error);
             });
     });
