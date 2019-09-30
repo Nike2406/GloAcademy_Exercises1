@@ -1,15 +1,15 @@
-let countTimer = (deadline) => {
+let countTimer = () => {
     let timerHours = document.querySelector('#timer-hours'),
         timerMinutes = document.querySelector('#timer-minutes'),
         timerSeconds = document.querySelector('#timer-seconds'),
 
         getTimeRemaining = () => {
-            let dateStop = new Date(deadline).getTime(),
+            let dateStop = new Date('11 16 2019 00:08:40').getTime(),
                 dateNow = new Date().getTime(),
                 timeRemaining = Math.floor((dateStop - dateNow) / 1000),
                 seconds = Math.floor(timeRemaining % 60),
                 minutes = Math.floor((timeRemaining / 60) % 60),
-                houres = Math.floor((timeRemaining / 60) / 60);
+                houres = Math.floor((timeRemaining / 60) % 24);
             return {
                 timeRemaining,
                 houres,

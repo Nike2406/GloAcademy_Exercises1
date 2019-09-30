@@ -1,5 +1,7 @@
 'use strict';
 
+import validator from './modules/validator';
+import sliderCarousel from './modules/sliderCarousel';
 import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';
 import togglePopUp from './modules/togglePopUp';
@@ -11,8 +13,11 @@ import numeralCalculate from './modules/numeralCalculate';
 import sendForm from './modules/sendForm';
 import correctInput from './modules/correctInput';
 
+
+    sliderCarousel();
+    validator();
     //Timer 
-    countTimer('11 16 2019 00:08:40');
+    countTimer();
 
     //Menu
     toggleMenu();
