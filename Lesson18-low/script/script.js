@@ -474,9 +474,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
                     if (request.status === 200) {
-                        reject(); //resolve
+                        resolve(request.status); 
                     } else {
-                        resolve(request.status); //reject
+                        reject();
                     }
                 });
     
